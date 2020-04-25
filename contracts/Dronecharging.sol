@@ -21,14 +21,14 @@ contract Dronecharging {
     
     }
 
-    Chargingstation[] public stations;
-    Drone[] public drones;
-    Drone public winner_drone;
-    uint[4][] public cs_priority;
-    address public manager;
-    uint public maxpridrone;
-    uint public maxpristation;
-    uint public budget_reached_coutn=0; 
+    Chargingstation[] private stations;
+    Drone[] private drones;
+    Drone private winner_drone;
+    uint[4][] private cs_priority;
+    address private manager;
+    uint private maxpridrone;
+    uint private maxpristation;
+    uint private budget_reached_coutn=0; 
     modifier restrict_drone(){
         require(msg.value>24 finney && msg.value<50 finney);
         _;
@@ -68,7 +68,7 @@ contract Dronecharging {
             });
             stations.push(b);
     }
-    function calc_dist() public restricted_manager{
+    function calc_dist() private restricted_manager{
        cs_priority=new uint[4][](drones.length);
        for (uint i=0; i < drones.length; i++) {
           
@@ -122,6 +122,7 @@ contract Dronecharging {
         }
         
          stations[maxpristation].addr.transfer(drones[maxpridrone].price_sent);
+         
          drones[maxpridrone].price_sent=0;
          drones[maxpridrone].price_offered=0;
          
@@ -158,5 +159,11 @@ contract Dronecharging {
     function getstations() public view returns(uint){
     	return stations.length;
     }
-
+    
+    function Winner_Drone() public view returns(address){
+    	return drones[maxpridrone].addr;
+    }
+    function Winner_Station() public view returns(address){
+    	return stations[maxpristation].addr;
+    }
 }
