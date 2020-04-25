@@ -24,7 +24,7 @@ contract Dronecharging {
     Chargingstation[] public stations;
     Drone[] public drones;
     Drone public winner_drone;
-    uint[2][] public cs_priority;
+    uint[4][] public cs_priority;
     address public manager;
     uint public maxpridrone;
     uint public maxpristation;
@@ -69,7 +69,7 @@ contract Dronecharging {
             stations.push(b);
     }
     function calc_dist() public restricted_manager{
-       cs_priority=new uint[2][](drones.length);
+       cs_priority=new uint[4][](drones.length);
        for (uint i=0; i < drones.length; i++) {
           
             uint[2] memory temp;
