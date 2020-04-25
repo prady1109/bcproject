@@ -122,19 +122,23 @@ contract Dronecharging {
         }
         
          stations[maxpristation].addr.transfer(drones[maxpridrone].price_sent);
-         
+         drones[maxpridrone].price_sent=0;
+         drones[maxpridrone].price_offered=0;
          
     }
-    function update_drone_price() public payable{
+    function update_drone_price(uint p,uint cl) public payable{
         uint f;
         for(uint i=0;i<drones.length;i++)
         {
             if(drones[i].addr==msg.sender)
-            {f=1;
+            {f=i;
             break;
             }
         }
         drones[f].price_sent=drones[i].price_sent+msg.value;
+        drones[f].price_offered=drones[i].price_offered+p;
+        drones[f].charge_level=cl;
+        drones[f].priority=p+cl+drones[f].mileage;
    
     }
     function update_station_energyoffered(uint p) public {
@@ -142,7 +146,7 @@ contract Dronecharging {
         for(uint i=0;i<stations.length;i++)
         {
             if(stations[i].addr==msg.sender)
-            {f=1;
+            {f=i;
             break;
             }
         }
